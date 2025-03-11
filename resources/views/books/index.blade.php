@@ -39,8 +39,8 @@
                         <td class="p-2">{{ $book->author }}</td>
                         <td class="text-center p-2">{{ $book->published_year }}</td>
                         <td class="p-2 flex gap-2 justify-center items-center">
-                            <a href="#" class="p-2 bg-slate-500 text-white rounded-md">Detail</a>
-                            <a href="#" class="p-2 bg-blue-500 text-white rounded-md">Update</a>
+                            <a href={{ route('show-book', $book->slug) }} class="p-2 bg-slate-500 text-white rounded-md">Detail</a>
+                            <a href={{ route('edit-book', $book->slug) }} class="p-2 bg-blue-500 text-white rounded-md">Edit</a>
                             <a href="#" class="p-2 bg-red-500 text-white rounded-md">Delete</a>
                         </td>
                     </tr>
