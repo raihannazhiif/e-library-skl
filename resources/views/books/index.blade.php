@@ -41,7 +41,14 @@
                         <td class="p-2 flex gap-2 justify-center items-center">
                             <a href={{ route('show-book', $book->slug) }} class="p-2 bg-slate-500 text-white rounded-md">Detail</a>
                             <a href={{ route('edit-book', $book->slug) }} class="p-2 bg-blue-500 text-white rounded-md">Edit</a>
-                            <a href="#" class="p-2 bg-red-500 text-white rounded-md">Delete</a>
+                            {{-- <a href={{ route('delete-book', $book->id) }} class="p-2 bg-red-500 text-white rounded-md">Delete</a> --}}
+
+                            <form action="{{ route('delete-book', $book->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="p-2 bg-red-500 text-white rounded-md">Delete</button>
+                            </form>
+                            
                         </td>
                     </tr>
                 @endforeach

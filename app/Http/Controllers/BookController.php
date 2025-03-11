@@ -105,7 +105,7 @@ class BookController extends Controller
     public function update(Request $request)
     {
         $request->validate([
-            "title" => "required|unique:books|min:3|max:255",
+            "title" => "required|min:3|max:255",
             "description" => "required|min:3|max:255",
             "page_count" =>"required|numeric|min:1",
             "author" => "required|min:3|max:255",
@@ -119,12 +119,12 @@ class BookController extends Controller
         ]);
 
         try {
-
             $book = Book::where("slug", $request->slug)->first();
 
             // check if image is uploaded
             if ($request->hasFile("image")) {
                 // check if book has image
+
                 if ($book->image) {
                     // if exsits, delete
                     Storage::disk("public")->delete("book-images/" . $book->image);
@@ -159,5 +159,19 @@ class BookController extends Controller
             dd($e->getMessage());
             return redirect()->back()->with("error", $e->getMessage())->withInput(request()->all());
         }
+    }
+    public function destroy(Request $request)
+    {
+        $book = Book::find( $request->id );
+
+        if ($book) {
+            if ($book->image) {
+                Storage::disk("public")->delete("book-images/" . $book->image);
+            }
+            $book->delete();
+            return redirect()->route("book.index")->with("success", "Book deleted successfully");
+        }
+
+        return redirect()->back()->with("error","Book not found");
     }
 }
