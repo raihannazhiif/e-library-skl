@@ -18,7 +18,7 @@
     </div>
     @endif
 
-    <form action={{ route('store-book') }} method="POST" class="flex flex-col gap-4" enctype="multipart/form-data">
+    <form action={{ route('book.store') }} method="POST" class="flex flex-col gap-4" enctype="multipart/form-data">
         @csrf
         <div class="flex flex-col gap-2">
             <label for="title" class="font-bold">Title</label>

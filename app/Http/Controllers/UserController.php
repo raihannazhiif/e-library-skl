@@ -21,7 +21,7 @@ class UserController extends Controller
             "email"=> "required|email|unique:users",
             "password"=> "required|string|min:6|confirmed",
         ]);
-        // dd($request->all());
+        dd($request->all());
         try {
 
             $user = User::create([
@@ -33,13 +33,13 @@ class UserController extends Controller
 
             if ($user) {
                 Auth::login($user);
-                return redirect()->route("book.index");
+                return redirect()->route("dashboard.index");
             } else {
                 throw new \Exception("Failed to register");
             }
 
         } catch (\Exception $e) {
-            dd($e->getMessage());
+            // dd($e->getMessage());
             return redirect()->back()->with("error", $e->getMessage());
         }
     }
@@ -62,7 +62,8 @@ class UserController extends Controller
     
             if (Auth::attempt($credentials)) {
                 $request->session()->regenerate();
-                return redirect()->route("book.index");
+                
+                return redirect()->route("dashboard.index");
             }
     
             return redirect()->back()->withErrors([
@@ -73,5 +74,12 @@ class UserController extends Controller
             return redirect()->back()->with("error", $e->getMessage());
         }
 
+    }
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route("book.index");
     }
 }

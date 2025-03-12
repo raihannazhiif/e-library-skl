@@ -18,7 +18,7 @@
             </div>
         @endif
 
-        <form action={{ route('update-book', $book->slug) }} method="POST" class="flex flex-col gap-4"
+        <form action={{ route('book.update', $book->slug) }} method="POST" class="flex flex-col gap-4"
             enctype="multipart/form-data">
             @csrf
             <div class="flex flex-col gap-2">
