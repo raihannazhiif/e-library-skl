@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('author');
             $table->year('published_year');
             $table->string('image')->nullable();
+            $table->integer('borrow_count')->default(0);
+            $table->enum('status', ['available', 'unavailable'])->default('available');
             $table->timestamps();
         });
     }

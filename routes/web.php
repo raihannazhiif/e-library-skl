@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BookController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -10,7 +11,10 @@ Route::middleware(['auth', 'admin'])->name('book.')->prefix('/book')->group(func
     Route::get('/', [BookController::class,'index'])->name('index'); // book.index
     Route::get('/new', [BookController::class,'create'])->name('create'); // book.create-book
     Route::post('/new', [BookController::class,'store'])->name('store');
-    Route::get('/{slug}', [BookController::class,'show'])->name('show');
+
+    // Route show excluded from admin
+    Route::get('/{slug}', [BookController::class,'show'])->name('show')->withoutMiddleware('admin');
+    
     Route::get('/edit/{slug}', [BookController::class,'edit'])->name('edit');
     Route::post('/edit/{slug}', [BookController::class,'update'])->name('update');
     Route::delete('/delete/{id}', [BookController::class,'destroy'])->name('delete');
@@ -18,15 +22,13 @@ Route::middleware(['auth', 'admin'])->name('book.')->prefix('/book')->group(func
 
 // Dashboard Routes
 Route::middleware(['auth'])->name('dashboard.')->group(function () {
-    Route::get('/', function () {
-        if (Auth::user()->role == "admin") {
-            return view('dashboard.admin.dashboard');
-        }
-        return view('dashboard.user.dashboard');
-    })->name('index');
-    // Route::get('/', function () {
-    //     return view('dashboard.admin.dashboard');
-    // })->name('admin');
+    Route::get('/', [DashboardController::class,'index'])->name('index');
+    Route::get('/borrow/{slug}', [DashboardController::class,'borrow'])->name('borrow');
+});
+
+// Borrow Routes
+Route::middleware(['auth'])->name('borrow.')->group(function () {
+    Route::post('/borrow/{id}', [DashboardController::class,'request'])->name('request');
 });
 
 // Auth Routes

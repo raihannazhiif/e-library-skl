@@ -48,7 +48,6 @@
                                 @method('DELETE')
                                 <button type="submit" class="p-2 bg-red-500 text-white rounded-md">Delete</button>
                             </form>
-                            
                         </td>
                     </tr>
                 @endforeach

@@ -21,7 +21,7 @@ class UserController extends Controller
             "email"=> "required|email|unique:users",
             "password"=> "required|string|min:6|confirmed",
         ]);
-        dd($request->all());
+        // dd($request->all());
         try {
 
             $user = User::create([
@@ -80,6 +80,6 @@ class UserController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return redirect()->route("book.index");
+        return redirect()->route("sign-in-form");
     }
 }
