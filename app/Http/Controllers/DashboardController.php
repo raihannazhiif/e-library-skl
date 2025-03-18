@@ -13,7 +13,6 @@ class DashboardController extends Controller
     {
         if (Auth::user()->role == 'admin') {
             $pendingBorrows = Borrow::where('status', 'pending')->get();
-
             return view('dashboard.admin.dashboard', compact('pendingBorrows'));
         }
 
@@ -29,5 +28,4 @@ class DashboardController extends Controller
 
         return view('dashboard.user.borrow', compact('book'));
     }
-    
 }
