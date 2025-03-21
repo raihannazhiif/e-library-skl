@@ -5,46 +5,52 @@
 @endsection
 
 @section('content')
-    <main class="flex flex-col gap-4 p-4">
-        <h1 class="text-4xl font-bold text-blue-800">
-
-            Dashboard Admin
+    <main class="flex flex-col gap-6 p-6">
+        <h1 class="text-4xl font-bold text-blue-800 flex items-center gap-2">
+            📊 Dashboard Admin
         </h1>
-        <a href={{ route('book.index') }} class="p-2 bg-blue-800 text-white rounded-md w-fit font-medium">Book List</a>
-        <a href="#" class="p-2 bg-blue-800 text-white rounded-md w-fit font-medium">Borrow List</a>
+        <p class="text-lg text-gray-600">Manage book requests and library data</p>
+
+        <div class="grid grid-cols-2 gap-4">
+            <a href={{ route('book.index') }} class="p-3 bg-blue-800 text-white rounded-md w-full text-center font-medium flex items-center gap-2">
+                📚 Book List
+            </a>
+            <a href="#" class="p-3 bg-blue-800 text-white rounded-md w-full text-center font-medium flex items-center gap-2">
+                📝 Borrow List
+            </a>
+        </div>
+
         {{-- Table Request Borrow --}}
-        <table class="p-4 border border-black">
+        <table class="border border-black w-full text-center">
             <thead>
                 <tr class="bg-blue-800 text-white">
-                    <th class="p-2">No</th>
-                    <th class="p-2">Name</th>
-                    <th class="p-2">Book Title</th>
-                    <th class="p-2">Request Date</th>
-                    <th class="p-2">Actions</th>
+                    <th class="p-3">No</th>
+                    <th class="p-3">Name</th>
+                    <th class="p-3">Book Title</th>
+                    <th class="p-3">Request Date</th>
+                    <th class="p-3">Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @if ($pendingBorrows->count() === 0)
-                    <tr class="text-center p-2">
-                        <td colspan="5">
-                            No items
-                        </td>
+                    <tr class="text-center">
+                        <td colspan="5" class="p-4">No items</td>
                     </tr>
                 @endif
 
                 @foreach ($pendingBorrows as $pending)
-                    <tr class="border-b border-neutral-500 hover:bg-neutral-200">
-                        <td class="p-2">{{ $loop->index + 1 }}</td>
-                        <td class="p-2">{{ $pending->user->name }}</td>
-                        <td class="p-2">{{ $pending->book->title }}</td>
-                        <td class="p-2">{{ $pending->created_at->format('l, j F Y H:i') }}</td>
-                        <td class="p-2 flex gap-2">
+                    <tr class="{{ $loop->odd ? 'bg-gray-100' : 'bg-white' }} hover:bg-neutral-200 border-b">
+                        <td class="p-3">{{ $loop->index + 1 }}</td>
+                        <td class="p-3">{{ $pending->user->name }}</td>
+                        <td class="p-3">{{ $pending->book->title }}</td>
+                        <td class="p-3">{{ $pending->created_at->format('l, j F Y H:i') }}</td>
+                        <td class="p-3 flex gap-2 justify-center">
                             <form action={{ route('borrow.accept') }} method="post">
                                 @csrf
                                 @method('PATCH')
                                 <input type="hidden" name="id" value={{ $pending->id }}>
                                 <button type="submit"
-                                    class="p-2 bg-blue-800 text-white rounded-md w-fit font-medium">Accept</button>
+                                    class="p-2 bg-green-600 text-white rounded-md font-medium">✅ Accept</button>
                             </form>
 
                             <form action={{ route('borrow.decline') }} method="post">
@@ -52,12 +58,11 @@
                                 @method('PATCH')
                                 <input type="hidden" name="id" value={{ $pending->id }}>
                                 <button type="submit"
-                                    class="p-2 bg-red-800 text-white rounded-md w-fit font-medium">Decline</button>
+                                    class="p-2 bg-red-600 text-white rounded-md font-medium">❌ Decline</button>
                             </form>
                         </td>
                     </tr>
                 @endforeach
-
             </tbody>
         </table>
     </main>
@@ -68,7 +73,6 @@
         <script>
             Toastify({
                 text: "{{ session('success') }}",
-                // text: "TEST",
                 duration: 3000,
                 close: true,
                 gravity: "top",
@@ -82,6 +86,7 @@
             }).showToast();
         </script>
     @endif
+
     @if ($errors->any())
         @foreach ($errors->all() as $error)
             <script>
