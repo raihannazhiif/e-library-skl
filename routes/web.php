@@ -42,3 +42,11 @@ Route::post('/sign-up', [UserController::class, 'register'])->name('register');
 Route::get('/sign-in', [UserController::class, 'signinForm'])->name('sign-in-form');
 Route::post('/sign-in', [UserController::class, 'login'])->name('login');
 Route::post('/sign-out', [UserController::class, 'logout'])->name('logout');
+
+
+ // Route untuk proses pinjam buku dari dashboard
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard/borrow/{slug}', [App\Http\Controllers\BorrowController::class, 'borrowBook'])
+        ->name('dashboard.borrow');
+});
+
